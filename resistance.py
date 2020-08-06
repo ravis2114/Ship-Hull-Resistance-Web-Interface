@@ -218,24 +218,24 @@ st.title("Resistance Calculation Using Holtrop & Mennen Method")
 
 # Frictional Resistance 
 st.header('Frictional Resistance, Rf')
-st.write('Rf :',app.form_factor("U-SHAPE")/1000, 'KN')
+st.write('Rf :',round(app.form_factor("U-SHAPE")/1000, 4), 'KN')
 
 # Wave Resistance
 st.header('Wave Resistance, Rw')
-st.write('Rw :', app.wave_resist()/1000, 'KN')
+st.write('Rw :', round(app.wave_resist()/1000, 4), 'KN')
 
 # Bulbous Bow Resistance
 st.header('Bulbous Bow Resistance, Rb')
-st.write('Rb :', app.bulbous_bow_resist()/1000, 'KN')
+st.write('Rb :', round(app.bulbous_bow_resist()/1000, 4), 'KN')
 
 # Transom Pressure Resistance
 st.header('Transom Pressure Resistance, Rtr')
-st.write('Rtr :', app.transom_pressure_resist()/1000, 'KN')
+st.write('Rtr :', round(app.transom_pressure_resist()/1000, 4), 'KN')
 
 # Model Ship Correlation Resistance
 st.header('Model Ship Correlation Resistance, Ra')
-st.write('Ra :', app.correlation_resist()/1000, 'KN')
+st.write('Ra :', round(app.correlation_resist()/1000, 4), 'KN')
 
 total_resist = app.form_factor("U-SHAPE") + app.wave_resist() + app.bulbous_bow_resist() + app.transom_pressure_resist() + app.correlation_resist()
 st.subheader('Total Resistance :')
-total_resist/1000, 'KN'
+round(total_resist/1000, 4), 'KN'
