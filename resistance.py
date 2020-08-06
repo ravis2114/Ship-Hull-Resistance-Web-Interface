@@ -39,9 +39,9 @@ class resistance:
 
         # coefficients
         st.sidebar.header('Basic Ship Coefficients')
-        self.Cb = st.sidebar.slider('block coefficient, Cb',0.0, 1.1, (0.69))
-        self.Cm = st.sidebar.slider('coefficient of midship section, Cm',0.0, 1.1, (0.98))
-        self.Cw = st.sidebar.slider('waterplane area coefficient, Cw',0.0, 1.1, (0.90))
+        self.Cb = st.sidebar.slider('block coefficient, Cb',0.1, 1.0, (0.69))
+        self.Cm = st.sidebar.slider('coefficient of midship section, Cm',0.1, 1.0, (0.98))
+        self.Cw = st.sidebar.slider('waterplane area coefficient, Cw',0.1, 1.0, (0.90))
         self.Cp = self.Cb/self.Cm
         
 
