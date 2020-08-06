@@ -13,7 +13,7 @@ class resistance:
         self.LOW = st.sidebar.slider('length of water line, LOW',50.0, 500.0, (120.0)) #length of waterline
         #self.LBP = st.sidebar.slider('length between perpendicular',0.0, 500.0, (40.0)) #length between perpendiculars
         self.B = st.sidebar.slider('breadth / breadth moulded, B',5.0, 90.0, (10.0))   #breadth
-        self.T = st.sidebar.slider('draught, T',0.0, 50.0, (12.0))   #draught
+        self.T = st.sidebar.slider('draught, T',1.0, 50.0, (12.0))   #draught
         self.Vel = st.sidebar.slider('velocity of ship in m/s, V',1.0, 50.0, (20.0))
         self.Lcb = st.sidebar.slider('longitudanal center of buyoncy, Lcb',-10.0,10.0, (5.0))
 
