@@ -126,7 +126,7 @@ class resistance:
         elif 0.11 <self.B/self.LOW <0.25:
             C7 = self.B/self.LOW
         elif self.B/self.LOW>=0.25:
-            0.5 - 0.0625*self.LOW/self.B
+            C7 = 0.5 - 0.0625*self.LOW/self.B
 
         Lr = self.LOW*(1 - self.Cp + 0.06*self.Cp*self.Lcb/(4*self.Cp - 1))
         iE = 1 + 89*math.exp( (-(self.LOW/self.B)**0.80856)*((1 - self.Cw)**0.30484)*((1 - self.Cp - 0.0225*self.Lcb)**0.6367)*((Lr/self.B)**0.34574)*(100*self.disp_vol/(self.LOW)**3)**0.16302 )
