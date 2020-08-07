@@ -3,8 +3,6 @@ import random
 import streamlit as st
 
 
-
-
 class resistance:
     def __init__(self):
 
@@ -12,12 +10,12 @@ class resistance:
         st.sidebar.header('Basic Ship Parameters')
         self.LOW = st.sidebar.slider('length of water line, LOW',50.0, 500.0, (120.0)) #length of waterline
         #self.LBP = st.sidebar.slider('length between perpendicular',0.0, 500.0, (40.0)) #length between perpendiculars
-        self.B = st.sidebar.slider('breadth / breadth moulded, B',5.0, 90.0, (10.0))   #breadth
+        self.B = st.sidebar.slider('breadth moulded, B',5.0, 90.0, (10.0))   #breadth
         self.T = st.sidebar.slider('draught, T',1.0, 50.0, (12.0))   #draught
         self.Vel = st.sidebar.slider('velocity of ship in m/s, V',1.0, 50.0, (20.0))
         self.Lcb = st.sidebar.slider('longitudanal center of buyoncy, Lcb',-10.0,10.0, (5.0))
 
-        self.disp_vol = st.sidebar.slider('volume displacement, Vol_disp',10000.0, 100000.0, (50000.0))
+        #self.disp_vol = st.sidebar.slider('volume displacement, Vol_disp',10000.0, 100000.0, (50000.0))
 
 
         """
@@ -46,7 +44,9 @@ class resistance:
         
 
         # some other parameters
+        self.disp_vol = self.Cb*self.LOW*self.B*self.T
         self.Ks = 1   ## roughness value
+
         
 
     def form_factor(self,C_STERN):
@@ -80,9 +80,83 @@ class resistance:
         
         return 0.5*self.density*Sapp*self.Vel*self.Vel*cf*K1        #here K1 is actually 1+K1
 
-    """
-    def appendage_resist(self, comp):
+    
+    def appendage_resist(self):
         
+        st.header('Appendage Resistance, Rapp')
+        ren = self.Vel*self.LOW*self.density/self.nu
+        cf = 0.075/(math.log10(ren) - 2)**2
+        append_resist = 0
+        if st.checkbox('appandages resistance'):
+            if st.checkbox('Rudder Behind Skeg'):
+                rudder_behind_skeg = st.slider('Rudder Behind Skeg Area',0.0, 20.0, (5.0))
+                rudder_behind_skeg_resist = 0.5*self.density*self.Vel*self.Vel*rudder_behind_skeg*random.uniform(1.5,2.0)*cf
+                append_resist = append_resist + rudder_behind_skeg_resist
+                st.write(round(rudder_behind_skeg_resist/1000, 4), 'KN')
+            
+            if st.checkbox('Rudder Behind Stern'):
+                rudder_behind_stern = st.slider('Rudder Behind Stern Area',0.0, 20.0, (5.0))
+                rudder_behind_stern_resist = 0.5*self.density*self.Vel*self.Vel*rudder_behind_stern*random.uniform(1.3,1.5)*cf
+                append_resist = append_resist + rudder_behind_stern_resist
+                st.write(round(rudder_behind_stern_resist/1000, 4), 'KN')
+            
+            if st.checkbox('Twin Screw Rudders'):
+                twin_screw_rudder = st.slider('Twin Screw Rudder Area',0.0, 20.0, (5.0))
+                twin_screw_rudder_resist = 0.5*self.density*self.Vel*self.Vel*twin_screw_rudder*2.8*cf
+                append_resist = append_resist + twin_screw_rudder_resist
+                st.write(round(twin_screw_rudder_resist/1000, 4), 'KN')
+
+            if st.checkbox('Shaft Brackets'):
+                shaft_bracket = st.slider('Shaft Brackets Area',0.0, 20.0, (5.0))
+                shaft_bracket_resist = 0.5*self.density*self.Vel*self.Vel*shaft_bracket*3.0*cf
+                append_resist = append_resist + shaft_bracket_resist
+                st.write(round(shaft_bracket_resist/1000, 4), 'KN')
+
+            if st.checkbox('Skeg'):
+                skeg = st.slider('Skeg Area',0.0, 20.0, (5.0))
+                skeg_resist = 0.5*self.density*self.Vel*self.Vel*skeg*random.uniform(1.5,2.0)*cf
+                append_resist = append_resist + skeg_resist
+                st.write(round(skeg_resist/1000, 4), 'KN')
+
+            if st.checkbox('Strut Bossings'):
+                strut_bossing = st.slider('Strut Bossings Area',0.0, 20.0, (5.0))
+                strut_bossing_resist = 0.5*self.density*self.Vel*self.Vel*strut_bossing*3.0*cf
+                append_resist = append_resist + strut_bossing_resist
+                st.write(round(strut_bossing_resist/1000, 4), 'KN')
+
+            if st.checkbox('Hull Bossings'):
+                hull_bossing = st.slider('Hull Bossings Area',0.0, 20.0, (5.0))
+                hull_bossing_resist = 0.5*self.density*self.Vel*self.Vel*hull_bossing*2.0*cf
+                append_resist = append_resist + hull_bossing_resist
+                st.write(round(hull_bossing_resist/1000, 4), 'KN')
+
+            if st.checkbox('Shafts'):
+                shaft = st.slider('Shafts Area',0.0, 20.0, (5.0))
+                shaft_resist = 0.5*self.density*self.Vel*self.Vel*shaft*random.uniform(2.0,4.0)*cf
+                append_resist = append_resist + shaft_resist
+                st.write(round(shaft_resist/1000, 4), 'KN')
+
+            if st.checkbox('Stabalizer Fins'):
+                stab_fins = st.slider('Stabalizer Fins Area',0.0, 20.0, (5.0))
+                stab_fins_resist = 0.5*self.density*self.Vel*self.Vel*stab_fins*2.8*cf
+                append_resist = append_resist + stab_fins_resist
+                st.write(round(stab_fins_resist/1000, 4), 'KN')
+
+            if st.checkbox('Dome'):
+                dome = st.slider('Dome Area',0.0, 20.0, (5.0))
+                dome_resist = 0.5*self.density*self.Vel*self.Vel*dome*2.7*cf
+                append_resist = append_resist + dome_resist
+                st.write(round(dome_resist/1000, 4), 'KN')
+
+            if st.checkbox('Bilge Keels'):
+                bilge_keel = st.slider('Bilge Keels Area',0.0, 20.0, (5.0))
+                bilge_keel_resist = 0.5*self.density*self.Vel*self.Vel*bilge_keel*1.4*cf
+                append_resist = append_resist + bilge_keel_resist
+                st.write(round(bilge_keel_resist/1000, 4), 'KN')
+
+        return append_resist   #rudder_behind_skeg_resist + rudder_behind_stern_resist + twin_screw_rudder_resist + shaft_bracket_resist + skeg_resist + strut_bossing_resist + hull_bossing_resist + shaft_resist + stab_fins_resist + dome_resist + bilge_keel_resist
+
+        """
         one_plus_k2_eq = []
         if comp=='rudder_behind_skeg':
             one_plus_k2_eq.append(random.uniform(1.5,2.0))
@@ -210,6 +284,9 @@ class resistance:
         
         return 0.5*self.density*((self.Vel)**2)*Ca
 
+    def total_resist(self):
+        return self.form_factor('U-SHAPE') + self.wave_resist() + self.bulbous_bow_resist() + self.transom_pressure_resist() + self.correlation_resist()
+
     
 
 app = resistance()
@@ -219,6 +296,10 @@ st.title("Resistance Calculation Using Holtrop & Mennen Method")
 # Frictional Resistance 
 st.header('Frictional Resistance, Rf')
 st.write('Rf :',round(app.form_factor("U-SHAPE")/1000, 4), 'KN')
+
+#Appendage Resistance 
+appendage_resistance = app.appendage_resist()
+
 
 # Wave Resistance
 st.header('Wave Resistance, Rw')
@@ -236,6 +317,16 @@ st.write('Rtr :', round(app.transom_pressure_resist()/1000, 4), 'KN')
 st.header('Model Ship Correlation Resistance, Ra')
 st.write('Ra :', round(app.correlation_resist()/1000, 4), 'KN')
 
-total_resist = app.form_factor("U-SHAPE") + app.wave_resist() + app.bulbous_bow_resist() + app.transom_pressure_resist() + app.correlation_resist()
+total_resist = app.form_factor("U-SHAPE") + appendage_resistance + app.wave_resist() + app.bulbous_bow_resist() + app.transom_pressure_resist() + app.correlation_resist()
 st.subheader('Total Resistance :')
 round(total_resist/1000, 4), 'KN'
+
+vel_list = [i for i in range(1,51)]
+total_resist_list = []
+for i in vel_list:
+    app.Vel = i
+    total_resist_list.append(round(app.total_resist(), 2)/1000)
+    
+#total_resist_list
+st.header('Velocity vs Total Resistance')
+st.line_chart( (total_resist_list) )
